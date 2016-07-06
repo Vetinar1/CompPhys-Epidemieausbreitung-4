@@ -1,4 +1,4 @@
 # CompPhys-Epidemieausbreitung-4+
 
-
-This is a test edit.
+Stefan Lueders und Dominic Schaffner
+Gruppe Epidemie 4
