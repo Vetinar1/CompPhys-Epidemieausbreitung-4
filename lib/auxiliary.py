@@ -1,7 +1,7 @@
 # Implements auxiliary functions
 
 # Import shit
-import numpy as np
+import numpy
 
 # Function that filters out cities with over 200k inhabitants
 
@@ -10,13 +10,11 @@ import numpy as np
 #Gibt ein Array mit dem jeweiligen Name der Stadt ('cities'), der Einwohnerzahl ('population'), dem Breitengrad ('latitude')
 #und dem Längengrad ('longitude') aus <- In Subarrays
 def readCities(source):
-       return np.loadtxt(source, skiprows=1, delimiter="," ,\
-                       dtype={'names': ('cities', 'population', 'latitude', 'longitude'),\
-                       'formats': ('S20', 'i4', 'f8', 'f8')})
-    
+	return numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('S20', 'i4', 'f8', 'f8')})
 
 def createNewTemp(source):
 	# Read Cities
+	global cities
 	cities = readCities(source)
 	
 	# Remove cities with more than 200k inhabitants
