@@ -14,7 +14,6 @@ def readCities(source):
 
 def createNewTemp(source):
 	# Read Cities
-	global cities
 	cities = readCities(source)
 	
 	# Remove cities with more than 200k inhabitants
@@ -24,3 +23,5 @@ def createNewTemp(source):
 	
 	# Write into new file
 	numpy.savetxt("temp.csv", cities, fmt=["%.20s", "%.1i", "%-.2f", "%-.2f"], delimiter=",", newline="\n")
+	
+	return cities

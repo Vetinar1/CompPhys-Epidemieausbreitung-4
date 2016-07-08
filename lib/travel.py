@@ -3,7 +3,7 @@
 import numpy
 
 
-def createLandConnections():
+def createLandConnections(cities):
 	# Initialize Land connections
 	# First, create 2D array full of zeros; each row/column index n corresponds to one cities[n]
 	landConnections = numpy.zeros((cities.size, cities.size))
@@ -22,7 +22,7 @@ def createLandConnections():
 	return landConnections
 	
 	
-def createAirConnections():
+def createAirConnections(cities):
 	# Initialize Land connections
 	# First, create 2D array full of zeros; each row/column index n corresponds to one cities[n]
 	airConnections = numpy.zeros((cities.size, cities.size))
