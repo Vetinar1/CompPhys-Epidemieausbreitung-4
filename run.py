@@ -1,7 +1,12 @@
 # Main script that runs the simulation
 #
+<<<<<<< HEAD
 # 
 # test
+=======
+# stuff
+# stuff
+>>>>>>> refs/remotes/origin/master
 
 
 # Import other scripts (Euler, Runge Kutta, ...)
