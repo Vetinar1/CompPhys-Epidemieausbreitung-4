@@ -1,50 +1,66 @@
 # THE POWER OF MATH
 # Implements math (auxiliary) functions
 
+#Import
+import numpy
+import scipy.integrate as integrate
 
-#Runge-Kutte method fourth-order and h=1 to solve a differential equation in the form y'(t)=f(t,y) and a given initial value y(t0)=y0 given as a list [t0,y0]
-def infectRK4(f,initialValue):
-    t0 = initialValue[0]
-    y0 = initialValue[1]
+#Runge-Kutte method fourth-order and h=1 to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
+def infectRK4(f,y0,t0):
     h = 1
-    k1 = f(t0,y0)
-    k2 = f(t0+h/2,y0+h/2*k1)
-    k3 = f(t0+h/2,y0+h/2*k2)
-    k4 = f(t0+h,y0+h*k3)
-    t1 = t0+h    
+    k1 = f(y0,t0)
+    k2 = f(y0+h/2*k1,t0+h/2)
+    k3 = f(y0+h/2*k2,t0+h/2)
+    k4 = f(y0+h*k3,t0+h)   
     y1 = y0 + h/6*(k1+2*k2+2*k3+k4)
-    return [t1,y1]
+    return y1
 
-#explicit Euler method (one step, h=1) to solve a differential equation in the form y'(t)=f(t,y) and a given initial value y(t0)=y0 given as a list [t0,y0]
-def infectEuler(f,initialValue):
-    t0=initialValue[0]
-    y0=initialValue[1]
-    print(y0)
+#explicit Euler method (one step, h=1) to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
+def infectEuler(f,y0,t0):
     h=1
-    t1 = t0+h 
-    #print('t1= ', t1)
-    y1=y0+h*f(t0,y0)
-    print('y1= ',y1)
-    return [t1,y1]
+    y1=y0+h*f(y0,t0)
+    return y1
     
 
 
-	
-def infectODEsolver(f,y):
-	return
-	
+#procedure using odeint from scipy.integrate to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
+def infectODEsolver(f,y0,t0):
+    h=1
+    t1 = t0+h 
+    y=integrate.odeint(f,y0,numpy.array([t0,t1]))
+    y1=y[-1] #odeint returns an array of solutions, one solution for each t in the given sequence of time points. We are only interested in the last solution 
+    return y1
+
+
+#Solve the differential equations for all cities. f is the prefered method to solve the DGLs (infectRK4, infectEuler or infectODEsolver)
+def runAll(f):
+    for city in cities:
+        SIR = numpy.array([city[1],city[2],city[3]]) 
+        SIRnew = f(DGLs,SIR,0)
+        for i in range(1,3):
+            city[i]=SIRnew[i-1]
+    return
+    
+    
+    
 def infectRK4All():
-	return
+    runAll(infectRK4)
+    return
 	
+ 
 def infectEulerAll():
-	return
+    runAll(infectEuler)
+    return
+    
+	
 	
 def infectODEsolverAll():
-	return
+    runAll(infectODEsolver)    
+    return
  
  
 #the given differential equations to describe the spread of diseases. The input variable SIR must be an array: SIR=array([S,I,R])
-def DGLs(t,SIR):
+def DGLs(SIR,t):
     S = SIR[0]
     I = SIR[1]
     R = SIR[2]
