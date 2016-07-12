@@ -7,8 +7,7 @@ import numpy
 
 
 #Prozdur zum Einlesen der Daten aus den csv-Dateien.
-#Gibt ein Array mit dem jeweiligen Name der Stadt ('cities'), der Einwohnerzahl ('population'), dem Breitengrad ('latitude')
-#und dem Längengrad ('longitude') aus <- In Subarrays
+#Gibt ein Array mit dem jeweiligen Name der Stadt ('cities'), der Anzahl gesunder Leute (hier noch gleich der Einwohnerzahl) ('S'), der Anzahl kranker Leute (hier noch 0) ('I'), der Anzahl immuner Leute (hier noch 0) ('R'),  dem Breitengrad ('latitude') und dem Längengrad ('longitude') aus <- In Subarrays
 def readCities(source):
 	#read from file:
     read=numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('a20', 'i4', 'f8', 'f8')})
