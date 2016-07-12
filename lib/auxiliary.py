@@ -10,11 +10,18 @@ import numpy
 #Gibt ein Array mit dem jeweiligen Name der Stadt ('cities'), der Einwohnerzahl ('population'), dem Breitengrad ('latitude')
 #und dem Längengrad ('longitude') aus <- In Subarrays
 def readCities(source):
+	#read from file:
     read=numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('a20', 'i4', 'f8', 'f8')})
+	
+	#create an new array filled with zeros with the additional field for 'I' and 'R'
     output=numpy.zeros(len(read),dtype={'names': ('cities', 'S', 'I', 'R', 'latitude', 'longitude'), 'formats': ('U20', 'i4','i4','i4', 'f8', 'f8')})
+	
+	#decode Strings:
     names=read['cities']
     for i in range(0, len(names)):
         output['cities'][i]=names[i].decode('UTF-8')
+		
+	#fill the rest of the output-array with the datas read from the file:
     output['S']=read['population']    
     output['latitude']=read['latitude']
     output['longitude']=read['longitude']
@@ -27,8 +34,6 @@ def createNewTemp(source):
 	
 	# Remove cities with more than 200k inhabitants
 	for city in cities:
-         print(city)
-         print(city[1])
          if city[1] < 200000:
              numpy.delete(cities, city)
 	
