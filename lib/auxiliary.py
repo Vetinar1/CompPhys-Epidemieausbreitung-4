@@ -13,7 +13,7 @@ def readCities(source):
     read=numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('a20', 'i4', 'f8', 'f8')})
 	
 	#create an new array filled with zeros with the additional field for 'I' and 'R'
-    output=numpy.zeros(len(read),dtype={'names': ('cities', 'S', 'I', 'R', 'latitude', 'longitude'), 'formats': ('U20', 'i4','i4','i4', 'f8', 'f8')})
+    output=numpy.zeros(len(read),dtype={'names': ('cities', 'population',  'latitude', 'longitude'), 'formats': ('U20', 'i4', 'f8', 'f8')})
 	
 	#decode Strings:
     names=read['cities']
@@ -21,7 +21,7 @@ def readCities(source):
         output['cities'][i]=names[i].decode('UTF-8')
 		
 	#fill the rest of the output-array with the datas read from the file:
-    output['S']=read['population']    
+    output['population']=read['population']    
     output['latitude']=read['latitude']
     output['longitude']=read['longitude']
 
@@ -37,6 +37,6 @@ def createNewTemp(source):
              numpy.delete(cities, city)
 	
 	# Write into new file
-	numpy.savetxt("temp.csv", cities, fmt=["%.20s", "%.1i","%.1i","%.1i", "%-.2f", "%-.2f"], delimiter=",", newline="\n")
+	numpy.savetxt("temp.csv", cities, fmt=["%.20s", "%.1i", "%-.2f", "%-.2f"], delimiter=",", newline="\n")
 	
 	return cities

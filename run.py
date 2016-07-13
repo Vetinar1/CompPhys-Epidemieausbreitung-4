@@ -16,19 +16,27 @@ import numpy
 # Ask user whether a new working file temp.csv should be created
 # NOTE: program does not work with missing temp.csv!
 new_temp = input("Create new temp.csv from resources? \n Note: Program does not work without valid temp.csv \n New temp.csv will be used as source \n [y/n]? \n")
-global cities
+
+#read data
 if new_temp == "y":
-	# Create new temp.csv
-	cities = createNewTemp("res/europe.csv")
+    # Create new temp.csv
+    inputData = createNewTemp("res/europe.csv")
+
 else:
 	# Do not create new temp.csv
 	# Read temp.csv to create array
-	cities = readCities("temp.csv")
+	inputData = readCities("temp.csv")
+
+#define global variables:
+global cities,population,landConnections,airConnections
+#cities and population from inputData:
+cities = inputData['cities']
+population = inputData['population']
+# Initialize land and air connectins between cities:
+landConnections = createLandConnections(inputData)
+airConnections = createAirConnections(inputData)
 	
 
-# Initialize connectins between cities
-landConnections = createLandConnections(cities)
-airConnections = createAirConnections(cities)
 
 
 while SIMULATION_RUNNING == True:
