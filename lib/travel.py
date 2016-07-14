@@ -19,7 +19,6 @@ def createLandConnections(inputData):
 				landConnections[i][j] = 0
 			elif 6378.388 * numpy.arccos(numpy.sin(inputData[i][2]) * numpy.sin(inputData[j][2]) + numpy.cos(inputData[i][2]) * numpy.cos(inputData[j][2]) * numpy.cos(inputData[j][3] - inputData[i][3])) < 500:
 				landConnections[i][j] = 1
-				print('groesser!')
 	return landConnections
 	
 	

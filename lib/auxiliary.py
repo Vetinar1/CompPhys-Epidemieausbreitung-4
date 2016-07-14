@@ -2,6 +2,8 @@
 
 # Import shit
 import numpy
+import matplotlib.pyplot as pyplot
+from mpl_toolkits.basemap import Basemap
 
 # Function that filters out cities with over 200k inhabitants
 
@@ -11,7 +13,12 @@ import numpy
 def readCities(source):
 	#read from file:
     read=numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('a20', 'i4', 'f8', 'f8')})
-	
+    
+    # Remove cities with more than 200k inhabitants
+    for city in read:
+    	if city['population'] < 200000:
+    		numpy.delete(read, city)
+     
 	#create an new array filled with zeros with the additional field for 'I' and 'R'
     output=numpy.zeros(len(read),dtype={'names': ('cities', 'population',  'latitude', 'longitude'), 'formats': ('U20', 'i4', 'f8', 'f8')})
 	
@@ -27,16 +34,15 @@ def readCities(source):
 
     return output
 
-def createNewTemp(source):
-	# Read Cities
-	cities = readCities(source)
+
+def setupMap(inputData):
+	# from http://matplotlib.org/basemap/users/geography.html
+	# coordinates of berlin, map projection cyl for easy coordinate transformation
+	m = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44)#, fix_aspect=False)
+	m.shadedrelief(scale=0.5)
 	
-	# Remove cities with more than 200k inhabitants
-	for city in cities:
-         if city[1] < 200000:
-             numpy.delete(cities, city)
-	
-	# Write into new file
-	numpy.savetxt("temp.csv", cities, fmt=["%.20s", "%.1i", "%-.2f", "%-.2f"], delimiter=",", newline="\n")
-	
-	return cities
+	m.plot(inputData["longitude"], inputData["latitude"], "r.")
+	pyplot.show()
+
+def draw(inputData):
+	pyplot.contourf(inputData["longitude"], inputData["latitude"], inf)
