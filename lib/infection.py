@@ -4,9 +4,10 @@
 #Import
 import numpy
 import scipy.integrate as integrate
+import lib.globals as glob
 
 #Runge-Kutte method fourth-order and h=1 to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
-def infectRK4(f,y0,t0):
+def RK4(f,y0,t0):
     h = 1
     k1 = f(y0,t0)
     k2 = f(y0+h/2*k1,t0+h/2)
@@ -16,7 +17,7 @@ def infectRK4(f,y0,t0):
     return y1
 
 #explicit Euler method (one step, h=1) to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
-def infectEuler(f,y0,t0):
+def euler(f,y0,t0):
     h=1
     y1=y0+h*f(y0,t0)
     return y1
@@ -24,38 +25,46 @@ def infectEuler(f,y0,t0):
 
 
 #procedure using odeint from scipy.integrate to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
-def infectODEsolver(f,y0,t0):
+def ODEsolver(f,y0,t0):
     h=1
     t1 = t0+h 
     y=integrate.odeint(f,y0,numpy.array([t0,t1]))
     y1=y[-1] #odeint returns an array of solutions, one solution for each t in the given sequence of time points. We are only interested in the last solution 
     return y1
 
+def infectRK4(SIR):
+    return RK4(DGLs,SIR,0)
+
+def infectEuler(SIR):
+    return euler(DGLs,SIR,0)
+    
+def infectODEsolver(SIR):
+    return ODEsolver(DGLs,SIR,0)
 
 #Solve the differential equations for all cities. f is the prefered method to solve the DGLs (infectRK4, infectEuler or infectODEsolver)
-def runAll(f):
-    for city in cities:
-        SIR = numpy.array([city[1],city[2],city[3]]) 
-        SIRnew = f(DGLs,SIR,0)
-        for i in range(1,3):
-            city[i]=SIRnew[i-1]
-    return
+def runAll(f,step):
+    for i in range(len(glob.cities)):
+        SIR = numpy.array([glob.sus[step][i],glob.inf[step][i],glob.rec[step][i]]) 
+        SIRnew = f(SIR)
+        glob.sus[step][i]=SIRnew[0]
+        glob.inf[step][i]=SIRnew[1]
+        glob.rec[step][i]=SIRnew[2]
+    return 
     
     
-    
-def infectRK4All():
-    runAll(infectRK4)
+def infectRK4All(step):
+    runAll(infectRK4,step)
     return
 	
  
-def infectEulerAll():
-    runAll(infectEuler)
+def infectEulerAll(step):
+    runAll(infectEuler,step)
     return
     
 	
 	
-def infectODEsolverAll():
-    runAll(infectODEsolver)    
+def infectODEsolverAll(step):
+    runAll(infectODEsolver,step)    
     return
  
  
@@ -65,16 +74,10 @@ def DGLs(SIR,t):
     I = SIR[1]
     R = SIR[2]
     N = S+I+R
-    dS = -beta*S*I/N + mu*(N -S)
-    dI = beta*S*I/N - gamma*I - mu*I
-    dR = gamma*I - mu*R
+    dS = -glob.beta*S*I/N + glob.mu*(N -S)
+    dI = glob.beta*S*I/N - glob.gamma*I - glob.mu*I
+    dR = glob.gamma*I - glob.mu*R
     return numpy.array([dS,dI,dR])
     
-#ein paar Testwerte:
-gamma=0.07
-mu=3*10**(-5)
-beta=0.1
 
-test1=numpy.array([100000., 0., 0.])
-test2=numpy.array([10**6,100,0])
     

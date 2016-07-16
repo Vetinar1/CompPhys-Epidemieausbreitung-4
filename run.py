@@ -7,43 +7,44 @@
 
 # Import other scripts (Euler, Runge Kutta, ...)
 #from lib.travel import *
-from lib.auxiliary import *
-from lib.travel import *
-import numpy
+import lib.auxiliary as aux
+import lib.travel as travel
+import lib.initialize as init
+import lib.globals as glob
+import lib.infection as inf
 
 
-#read data
-inputData = readCities("res/europe.csv")
+#initialize basic setting, loading data, creating connections, creating a SIR population...
+init.initialize()
 
-#define global variables:
-global cities,population,landConnections,airConnections
 
-#cities and population from inputData:
-cities = inputData['cities']
-population = inputData['population']
-sus = population
-inf = numpy.zeroes(sus.size)
-rec = inf
 
-# Initialize land and air connectins between cities:
-landConnections = createLandConnections(inputData)
-airConnections = createAirConnections(inputData)
-	
 
-setupMap(inputData)
 
-while SIMULATION_RUNNING == True:
-	# Run Simulation
-	# One while == one day
-	
-	# Calculate land + air travel
-	travelLandAll();
-	travelAirAll();
-	
-	# Execute Euler, RK and ode/odeint
-	infectEulerAll();
-	infectRK4All();
-	infectODEsolverAll();
-	
-	# draw using matplotlib
-	
+aux.setupMap(glob.inputData)
+
+
+i=1
+while i<= glob.steps:
+    # Run Simulation
+    # One step == one day
+
+    # Calculate land + air travel
+    #print(glob.sus[i][city])
+    travel.travelLandAll(i)
+   # print(glob.sus[i][city])
+    travel.travelAirAll(i)
+    #print(glob.sus[i][city])
+    
+    # Execute Euler, RK and ode/odeint
+#    inf.infectEulerAll(i);
+    inf.infectRK4All(i);
+#    inf.infectODEsolverAll(i);
+    
+    i += 1
+    
+
+#	infectODEsolverAll();
+#	
+#	# draw using matplotlib
+#	
