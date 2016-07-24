@@ -2,8 +2,10 @@
 
 # Import shit
 import numpy
+import scipy.interpolate
 import matplotlib.pyplot as pyplot
 from mpl_toolkits.basemap import Basemap
+import lib.globals as glob
 
 # Function that filters out cities with over 200k inhabitants
 
@@ -35,14 +37,38 @@ def readCities(source):
     return output
 
 
-def setupMap(inputData):
+def setupMap():
 	# from http://matplotlib.org/basemap/users/geography.html
 	# coordinates of berlin, map projection cyl for easy coordinate transformation
-	m = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44)#, fix_aspect=False)
-	m.shadedrelief(scale=0.5)
+	def_ax = pyplot.gca()
+	#def_ax.set_autoscale_on(True)
+	def_ax.set_axis_bgcolor((0, 0, 0, 0))
+	glob.m = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44, anchor="NE", fix_aspect=False)
+	#glob.m.shadedrelief(scale=0.5)
+	glob.m.drawcoastlines()
 	
-	m.plot(inputData["longitude"], inputData["latitude"], "r.")
-	pyplot.show()
+	glob.m.plot(glob.inputData["longitude"], glob.inputData["latitude"], "r.")
+	#glob.ax = pyplot.axes([0, 0, 1, 1])#[-13, 34, 44+13, 72-34])
+	#glob.ax.set_alpha(0.1)
+	#return m
+	#lon, lat = numpy.meshgrid(glob.inputData["longitude"], glob.inputData["latitude"])
+	#print(lon.shape)
+	#print(lat.shape)
+	#blurb = numpy.random.rand(243)
+	#print(blurb)
+	#print(numpy.ma.getmask(blurb))
+	#print(numpy.ma.getmask(lon))
+	#print(numpy.ma.getmask(lat))
+	
+	
+	#draw()
+	#pyplot.show()
 
-def draw(inputData):
-	pyplot.contourf(inputData["longitude"], inputData["latitude"], inf)
+def draw():
+	grid_x, grid_y = numpy.mgrid[-13:44:1000j, 34:72:1000j]
+	zgrid = scipy.interpolate.griddata( (glob.inputData["longitude"], glob.inputData["latitude"]), glob.inf[-1], (grid_x, grid_y), method="linear")
+	glob.m.contourf(grid_x, grid_y, zgrid, alpha=0.5)
+	#new_ax = pyplot.axes([0, 0, 1, 1])#[-13, 34, 44+13, 72-34])
+	#new_ax.set_axis_bgcolor((0, 0, 0, 0))
+	#pyplot.show()
+

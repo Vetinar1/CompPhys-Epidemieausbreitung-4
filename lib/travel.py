@@ -97,4 +97,3 @@ def travelAirAll(step):
     glob.rec[step]=travelAll(travelAir,glob.rec[step])
     return
 	
-

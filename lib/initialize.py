@@ -21,7 +21,7 @@ def initialize():
 def variableParameters():
 
     # define all variable parameters:
-    glob.steps = 30 #number of steps for the simulation
+    glob.steps = 200 #number of steps for the simulation
     glob.pt = 0.1 #probability of travel
     glob.sf = 0.4 # share of peolple traveling via air
     

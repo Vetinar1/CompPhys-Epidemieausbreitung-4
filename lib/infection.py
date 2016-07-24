@@ -80,4 +80,4 @@ def DGLs(SIR,t):
     return numpy.array([dS,dI,dR])
     
 
-    
+ 
