@@ -30,6 +30,7 @@ def createLandConnections(inputData):
                     
     return landConnections
 	
+	
 def createAirConnections(inputData):
 	# Initialize Land connections
 	# First, create 2D array full of zeros; each row/column index n corresponds to one cities[n]

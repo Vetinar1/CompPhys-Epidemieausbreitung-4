@@ -6,6 +6,7 @@ import numpy
 import scipy.integrate as integrate
 import lib.globals as glob
 
+
 #Runge-Kutte method fourth-order and h=1 to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
 def RK4(f,y0,t0):
     h = 1
@@ -16,13 +17,13 @@ def RK4(f,y0,t0):
     y1 = y0 + h/6*(k1+2*k2+2*k3+k4)
     return y1
 
+
 #explicit Euler method (one step, h=1) to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
 def euler(f,y0,t0):
     h=1
     y1=y0+h*f(y0,t0)
     return y1
     
-
 
 #procedure using odeint from scipy.integrate to solve a differential equation in the form y'(t)=f(y,t) and the given initial values y0 (can also be an array of values) and t0
 def ODEsolver(f,y0,t0):
@@ -32,14 +33,18 @@ def ODEsolver(f,y0,t0):
     y1=y[-1] #odeint returns an array of solutions, one solution for each t in the given sequence of time points. We are only interested in the last solution 
     return y1
 
+
 def infectRK4(SIR):
     return RK4(DGLs,SIR,0)
 
+
 def infectEuler(SIR):
     return euler(DGLs,SIR,0)
+ 
     
 def infectODEsolver(SIR):
     return ODEsolver(DGLs,SIR,0)
+
 
 #Solve the differential equations for all cities. f is the prefered method to solve the DGLs (infectRK4, infectEuler or infectODEsolver)
 def runAll(f,step):
@@ -61,7 +66,6 @@ def infectEulerAll(step):
     runAll(infectEuler,step)
     return
     
-	
 	
 def infectODEsolverAll(step):
     runAll(infectODEsolver,step)    
