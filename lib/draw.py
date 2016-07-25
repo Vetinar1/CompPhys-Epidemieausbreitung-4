@@ -26,10 +26,18 @@ def update(bla):
 	grid_x, grid_y = numpy.mgrid[-13:44:1000j, 34:72:1000j]
 	zgrid = scipy.interpolate.griddata( (glob.inputData["longitude"], glob.inputData["latitude"]), glob.inf[glob.step]/glob.population, (grid_x, grid_y), method="linear")
 	# Third, draw data
-	glob.cont = glob.m.contourf(grid_x, grid_y, zgrid, Levels=[0])#, alpha=0.5, cmap="YlOrRd")
+	glob.cont = glob.m.contourf(grid_x, grid_y, zgrid, cmap="YlOrRd")
 	# Fourth, draw map
 	glob.m.drawcoastlines()
-	glob.m.plot(glob.inputData["longitude"], glob.inputData["latitude"], "r.")
+	# Fifth, draw cities
+	for i in range(0, glob.cities.size):
+		print(glob.population[i])
+		if glob.population[i] < 1000000:
+			glob.m.plot(glob.inputData["longitude"][i], glob.inputData["latitude"][i], "r.")
+		else:
+			glob.m.plot(glob.inputData["longitude"][i], glob.inputData["latitude"][i], "b.")
+	
+	
 	colorbar = glob.m.colorbar(glob.cont, location="right")
 	pyplot.text(0, 70, glob.step)
 	
