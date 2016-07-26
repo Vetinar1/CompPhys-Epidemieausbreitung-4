@@ -10,6 +10,7 @@ import lib.globals as glob
 import matplotlib.animation as anim
 import matplotlib.pyplot as pyplot
 
+glob.method = input("Please choose calculation method. Valid: RK4, Euler, ODE. Default: ODE. \n")
 #initialize basic setting, loading data, creating connections, creating a SIR population...
 init.initialize()
 

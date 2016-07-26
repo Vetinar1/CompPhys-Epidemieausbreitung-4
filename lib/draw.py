@@ -17,19 +17,32 @@ def update(bla):
 	# Move simulation forward by 1 day
 	travel.travelLandAll(glob.step)
 	travel.travelAirAll(glob.step)
-	inf.infectRK4All(glob.step)
+	
 	
 	# draw
 	# First, prepare figure
 	pyplot.clf()
+	
+	
+	if glob.method == "RK4":
+		inf.infectRK4All(glob.step)
+		pyplot.text(-12, 71, "Calculation method: RK4")
+	elif glob.method == "Euler":
+		inf.infectEulerAll(glob.step)
+		pyplot.text(-12, 71, "Calculation method: Euler")
+	else:
+		inf.infectODEsolverAll(glob.step)
+		pyplot.text(-12, 71, "Calculation method: ODE")
+	
 	# Second, prepare data
-	grid_x, grid_y = numpy.mgrid[-13:44:1000j, 34:72:1000j]
+	grid_x, grid_y = numpy.mgrid[-13:44:500j, 34:72:500j]
 	zgrid = scipy.interpolate.griddata( (glob.inputData["longitude"], glob.inputData["latitude"]), glob.inf[glob.step]/glob.population, (grid_x, grid_y), method="linear")
 	# Third, draw data
 	glob.cont = glob.m.contourf(grid_x, grid_y, zgrid, cmap="YlOrRd")
 	# Fourth, draw map
 	glob.m.drawcoastlines()
 	# Fifth, draw cities
+	
 	for i in range(0, glob.cities.size):
 		print(glob.population[i])
 		if glob.population[i] < 1000000:
@@ -39,29 +52,24 @@ def update(bla):
 	
 	
 	colorbar = glob.m.colorbar(glob.cont, location="right")
-	pyplot.text(0, 70, glob.step)
-	
+	pyplot.text(-12, 70, "Day: {}".format(glob.step))
+	pyplot.text(-12, 69, "Total infected: {}".format(round(numpy.sum(glob.inf[glob.step]), 2)))
+	pyplot.text(-12, 68, "Total infected (percent): {}".format(round(numpy.sum(glob.inf[glob.step])/numpy.sum(glob.population), 8)))
 
 # Function that sets up map for first frame
 def setupMap():
 	# from http://matplotlib.org/basemap/users/geography.html
 	# coordinates of berlin, map projection cyl for easy coordinate transformation
-	#def_ax = pyplot.gca()
-	#def_ax.set_axis_bgcolor((0, 0, 0, 0))
-	glob.m = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44, anchor="NE", fix_aspect=False, resolution="c")
-	glob.m.drawcoastlines()
+	#glob.cont_ax = pyplot.gca()
+	#glob.m2 = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44, anchor="NE", fix_aspect=False, resolution="c")
 	
+	#glob.map_ax = pyplot.axes([0, 0, ])#fig)
+	#glob.map_ax.set_axis_bgcolor((0, 0, 0, 0))
+	#pyplot.sca(glob.map_ax)
+	
+	glob.m = Basemap(projection='cyl', llcrnrlat=34, llcrnrlon=-13,  urcrnrlat=72, urcrnrlon=44, anchor="NE", fix_aspect=False, resolution="c")
+	glob.m.drawcoastlines()	
 	glob.m.plot(glob.inputData["longitude"], glob.inputData["latitude"], "r.")
 	
-	
-	
-'''
-def draw():
-	grid_x, grid_y = numpy.mgrid[-13:44:1000j, 34:72:1000j]
-	zgrid = scipy.interpolate.griddata( (glob.inputData["longitude"], glob.inputData["latitude"]), glob.inf[-1], (grid_x, grid_y), method="linear")
-	glob.m.contourf(grid_x, grid_y, zgrid, alpha=0.5)
-	#new_ax = pyplot.axes([0, 0, 1, 1])#[-13, 34, 44+13, 72-34])
-	#new_ax.set_axis_bgcolor((0, 0, 0, 0))
-	#pyplot.show()
+	#pyplot.sca(glob.cont_ax)
 
-'''
