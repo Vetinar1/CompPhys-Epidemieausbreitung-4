@@ -40,7 +40,6 @@ def update(bla):
 	# Fifth, draw cities
 	
 	for i in range(0, glob.cities.size):
-		#print(glob.population[i])
 		if glob.population[i] < 1000000:
 			glob.m.plot(glob.inputData["longitude"][i], glob.inputData["latitude"][i], "r.")
 		else:

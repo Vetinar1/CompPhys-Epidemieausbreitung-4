@@ -33,15 +33,15 @@ def ODEsolver(f,y0,t0):
     y1=y[-1] #odeint returns an array of solutions, one solution for each t in the given sequence of time points. We are only interested in the last solution 
     return y1
 
-
+#run RK4 for an explicit SIR-population
 def infectRK4(SIR):
     return RK4(DGLs,SIR,0)
 
-
+#run euler for an explicit SIR-population
 def infectEuler(SIR):
     return euler(DGLs,SIR,0)
  
-    
+#run ODEsolver for an explicit SIR-population  
 def infectODEsolver(SIR):
     return ODEsolver(DGLs,SIR,0)
 
@@ -57,6 +57,7 @@ def runAll(f,step):
         glob.dead[step][i]=SIRnew[3]
     return 
     
+
     
 def infectRK4All(step):
     runAll(infectRK4,step)
@@ -73,17 +74,19 @@ def infectODEsolverAll(step):
     return
  
  
-#the given differential equations to describe the spread of diseases. The input variable SIR must be an array: SIR=array([S,I,R])
+#the given differential equations to describe the spread of diseases. The input variable SIR must be an array: SIR=array([S,I,R,D])
+#the differentil equations are modified to impement quarantines and death.
 def DGLs(SIR,t):
     S = SIR[0]
     I = SIR[1]
     R = SIR[2]
     D = SIR[3]
     N = S+I+R+D
-    dS = -(1-glob.quar)*glob.beta*S*I/N + glob.mu*(N-S)
-    dI = (1-glob.quar)*glob.beta*S*I/N - glob.gamma*I - (glob.mu+glob.death)*I
-    dR = glob.gamma*I - glob.mu*R
-    dD = glob.death*I
+    dS = -(1-glob.quar)*glob.beta*S*I/N + glob.mu*(N-S) #first DGL from exercie sheet modified by multiplying beta with (1-quar) to implement quarantine. quar is between 0-1 and lowers the probability to get infected.
+    dI = (1-glob.quar)*glob.beta*S*I/N - glob.gamma*I - (glob.mu+glob.death)*I #second DGL from exercise sheet modified by multiplying beta with (1-quar) to implement quarantine. quar is between 0-1 and lowers the probability to get infected.
+														#To implement deathly diseases, the death-rate is added to the natural death rate.
+    dR = glob.gamma*I - glob.mu*R 	#third DGL from exercise sheet
+    dD = glob.death*I #additional DGL to describe the killed people from the disease
     return numpy.array([dS,dI,dR,dD])
     
 

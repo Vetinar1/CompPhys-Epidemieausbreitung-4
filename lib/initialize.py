@@ -1,4 +1,4 @@
-#define global variables
+#initialize settings, load data, define global variables..
 
 import lib.travel as travel
 import lib.globals as glob
@@ -12,7 +12,7 @@ def initialize():
     #initialize all settings, has to be run at first
     connections() 			# read data and initialize connections
     variableParameters()	# define all variable parameters
-    probs() 				# compute the #arrays with all probabilieties between cities:
+    probs() 				# compute the arrays with all probabilieties between cities:
     
     return
      
@@ -70,23 +70,19 @@ def variableParameters():
         glob.disease='influenza (default)'
     print('parameters: \n beta=',glob.beta,'\n gamma=',glob.gamma,'\n mu=',glob.mu,'\n death=',glob.death,'\n')
 				
-
-				
-
-				
     return    
 
     
 
 def probs():    
-    #arrays with all probabilieties between cities:
-    #global probabilitiesAir,probabilitiesLand
+    #create arrays with all probabilieties between cities:
     glob.probabilitiesLand = travel.probabilities(glob.landConnections,glob.pl)
     glob.probabilitiesAir = travel.probabilities(glob.airConnections,glob.pf)
     return
     
     
-    
+ 
+# compute the arrays with all probabilieties between cities:   
 def connections():     
      
     #read data:
@@ -96,7 +92,7 @@ def connections():
     glob.cities = glob.inputData['cities']
     glob.population = glob.inputData['population']
     
-    #print(inputData)
+
     # Initialize land and air connectins between cities:
     glob.landConnections = travel.createLandConnections(glob.inputData)
     glob.airConnections = travel.createAirConnections(glob.inputData)
@@ -104,10 +100,8 @@ def connections():
     
 
 
-#Prozdur zum Einlesen der Daten aus den csv-Dateien.
-#Gibt ein Array mit dem jeweiligen Name der Stadt ('cities'), der Anzahl gesunder Leute (hier noch gleich der Einwohnerzahl) ('S'),
-#der Anzahl kranker Leute (hier noch 0) ('I'), der Anzahl immuner Leute (hier noch 0) ('R'), 
-#dem Breitengrad ('latitude') und dem Längengrad ('longitude') aus <- In Subarrays
+#read data from file
+#returns an array with entries in the form: ('cities', 'population',  'latitude', 'longitude')
 def readCities(source):
 	#read from file:
     read=numpy.loadtxt(source, skiprows=1, delimiter="," , dtype={'names': ('cities', 'population', 'latitude', 'longitude'), 'formats': ('a20', 'i4', 'f8', 'f8')})
@@ -116,8 +110,8 @@ def readCities(source):
     for city in read:
     	if city['population'] < 200000:
     		numpy.delete(read, city)
-     
-	#create an new array filled with zeros with the additional field for 'I' and 'R'
+     				
+	#create an new array filled with zeros
     output=numpy.zeros(len(read),dtype={'names': ('cities', 'population',  'latitude', 'longitude'), 'formats': ('U20', 'i4', 'f8', 'f8')})
 	
 	#decode Strings:
