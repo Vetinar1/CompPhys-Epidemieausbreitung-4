@@ -12,11 +12,7 @@ import lib.travel as travel
 # Function that draws each frame
 def update(bla):
 	# increase steap count
-	glob.step+=1
-	
-	# Move simulation forward by 1 day
-	travel.travelLandAll(glob.step)
-	travel.travelAirAll(glob.step)
+	glob.step+=10
 	
 	
 	# draw
@@ -25,13 +21,13 @@ def update(bla):
 	
 	
 	if glob.method == "RK4":
-		inf.infectRK4All(glob.step)
+		#inf.infectRK4All(glob.step)
 		pyplot.text(-12, 71, "Calculation method: RK4")
 	elif glob.method == "Euler":
-		inf.infectEulerAll(glob.step)
+		#inf.infectEulerAll(glob.step)
 		pyplot.text(-12, 71, "Calculation method: Euler")
 	else:
-		inf.infectODEsolverAll(glob.step)
+		#inf.infectODEsolverAll(glob.step)
 		pyplot.text(-12, 71, "Calculation method: ODE")
 	
 	# Second, prepare data
@@ -44,7 +40,7 @@ def update(bla):
 	# Fifth, draw cities
 	
 	for i in range(0, glob.cities.size):
-		print(glob.population[i])
+		#print(glob.population[i])
 		if glob.population[i] < 1000000:
 			glob.m.plot(glob.inputData["longitude"][i], glob.inputData["latitude"][i], "r.")
 		else:

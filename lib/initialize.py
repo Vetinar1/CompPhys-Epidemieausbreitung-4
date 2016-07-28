@@ -19,10 +19,11 @@ def initialize():
 def variableParameters():
 
     # define all variable parameters:
-    glob.steps = 200 	# number of steps for the simulation
+    glob.steps = 500 	# number of steps for the simulation
     glob.step = 0		# current step
-    glob.pt = 0.1 		# probability of travel
+    glob.pt = 0.01 		# probability of travel
     glob.sf = 0.4 		# share of peolple traveling via air
+    glob.quar = 0 		# degree of quarantine, has to be between 0-1, 0: no quarantin, 1: all infected people are in quarantin
     
     
     glob.pf = glob.pt*glob.sf 		#probability of traveling via air    
@@ -34,16 +35,41 @@ def variableParameters():
     glob.sus[0]=glob.population
     glob.inf = numpy.zeros((glob.steps+1,glob.population.size))
     glob.rec = numpy.zeros((glob.steps+1,glob.population.size))
-
+    glob.dead = numpy.zeros((glob.steps+1,glob.population.size))
 
     #1000 infected people in London:
     glob.inf[0][list(glob.cities).index('London')]=1000
     glob.sus[0]=glob.sus[0]-glob.inf[0]
 
-    #parameters of disease:
-    glob.beta=0.1
-    glob.gamma=0.07
-    glob.mu=3*10**-5
+     
+    
+    #define and choose possible diseases:
+    disease = input("Please choose disease. Enter the number of the disease. \n Valid: \n 1: influenza (parameters given in the exercise) \n 2: chicken pocks \n 3: ebola (with death) \n(Default=1)\n")
+
+    if disease == '2':
+        #parameters for chicken pocks
+        glob.beta=2
+        glob.gamma=1/5
+        glob.mu=3*10**-5
+        glob.death=0
+    elif disease == '3':
+        #parameters for ebola
+        glob.beta=0.05
+        glob.gamma=1/42
+        glob.mu=3*10**-5
+        glob.death=0.74/42
+    else:
+        #parameters of disease given in the excercises:
+        glob.beta=0.1
+        glob.gamma=0.07
+        glob.mu=3*10**-5
+        glob.death=0
+    print('parameters: \n beta=',glob.beta,'\n gamma=',glob.gamma,'\n mu=',glob.mu,'\n death=',glob.death,'\n')
+				
+
+				
+
+				
     return    
 
     

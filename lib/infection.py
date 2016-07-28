@@ -49,11 +49,12 @@ def infectODEsolver(SIR):
 #Solve the differential equations for all cities. f is the prefered method to solve the DGLs (infectRK4, infectEuler or infectODEsolver)
 def runAll(f,step):
     for i in range(len(glob.cities)):
-        SIR = numpy.array([glob.sus[step][i],glob.inf[step][i],glob.rec[step][i]]) 
+        SIR = numpy.array([glob.sus[step][i],glob.inf[step][i],glob.rec[step][i],glob.dead[step][i]])
         SIRnew = f(SIR)
         glob.sus[step][i]=SIRnew[0]
         glob.inf[step][i]=SIRnew[1]
         glob.rec[step][i]=SIRnew[2]
+        glob.dead[step][i]=SIRnew[3]
     return 
     
     
@@ -77,11 +78,13 @@ def DGLs(SIR,t):
     S = SIR[0]
     I = SIR[1]
     R = SIR[2]
-    N = S+I+R
-    dS = -glob.beta*S*I/N + glob.mu*(N -S)
-    dI = glob.beta*S*I/N - glob.gamma*I - glob.mu*I
+    D = SIR[3]
+    N = S+I+R+D
+    dS = -(1-glob.quar)*glob.beta*S*I/N + glob.mu*(N-S)
+    dI = (1-glob.quar)*glob.beta*S*I/N - glob.gamma*I - (glob.mu+glob.death)*I
     dR = glob.gamma*I - glob.mu*R
-    return numpy.array([dS,dI,dR])
+    dD = glob.death*I
+    return numpy.array([dS,dI,dR,dD])
     
 
  
