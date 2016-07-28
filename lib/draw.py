@@ -51,6 +51,8 @@ def update(bla):
 	pyplot.text(-12, 70, "Day: {}".format(glob.step))
 	pyplot.text(-12, 69, "Total infected: {}".format(round(numpy.sum(glob.inf[glob.step]), 2)))
 	pyplot.text(-12, 68, "Total infected (percent): {}".format(round(numpy.sum(glob.inf[glob.step])/numpy.sum(glob.population), 8)))
+	pyplot.text(-12,67, glob.disease)
+	pyplot.text(-12,66, glob.containment)
 
 # Function that sets up map for first frame
 def setupMap():

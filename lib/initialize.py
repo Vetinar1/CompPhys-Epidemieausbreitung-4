@@ -19,7 +19,7 @@ def initialize():
 def variableParameters():
 
     # define all variable parameters:
-    glob.steps = 500 	# number of steps for the simulation
+    glob.steps = 1000 	# number of steps for the simulation
     glob.step = 0		# current step
     glob.pt = 0.01 		# probability of travel
     glob.sf = 0.4 		# share of peolple traveling via air
@@ -52,18 +52,21 @@ def variableParameters():
         glob.gamma=1/5
         glob.mu=3*10**-5
         glob.death=0
+        glob.disease='chicken pocks'
     elif disease == '3':
         #parameters for ebola
         glob.beta=0.05
         glob.gamma=1/42
         glob.mu=3*10**-5
         glob.death=0.74/42
+        glob.disease='ebola'
     else:
         #parameters of disease given in the excercises:
         glob.beta=0.1
         glob.gamma=0.07
         glob.mu=3*10**-5
         glob.death=0
+        glob.disease='influenza (default)'
     print('parameters: \n beta=',glob.beta,'\n gamma=',glob.gamma,'\n mu=',glob.mu,'\n death=',glob.death,'\n')
 				
 

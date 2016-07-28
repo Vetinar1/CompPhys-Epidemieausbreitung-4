@@ -25,6 +25,14 @@ init.initialize()
 containment=input('Please choose a containment method. Enter the number. Valid: \n 1: none \n 2: quarantine: put a share of the infected get in quarantine \n 3: inoculation: instantly inoculate 10% of all the people when more than 3% are infected \n 4: closing airport of the city with the highest infection rate > 5% \n (Default=1)\n')
 glob.method = input("Please choose calculation method. Valid: RK4, Euler, ODE. Default: ODE. \n")
 
+if containment=='2':
+	glob.containment='quarantine'
+elif containment == '3':
+	glob.containment='inoculation'
+elif containment == '4':
+	glob.containment='closing airports'
+else:
+	glob.containment='no containment'
 
 #run simulation:
 print('simulation is running, please wait \n')
