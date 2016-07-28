@@ -16,6 +16,7 @@ init.initialize()
 
 # Set up figure
 fig = pyplot.figure(figsize=(10, 10))
+fig.canvas.set_window_title('Epidemieausbreitung')
 # Render animation
 ani = anim.FuncAnimation(fig, draw.update, frames=glob.steps, init_func=draw.setupMap, repeat=False, interval=50)
 # Show animation

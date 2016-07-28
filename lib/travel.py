@@ -77,10 +77,10 @@ def travelAir(citieIndex,actualPopulations):
 
  
  
-def travelAll(f,actualPolulations):
-    newPopulations=numpy.zeros(len(actualPolulations))
-    for i in range(len(actualPolulations)):
-        newPopulations[i]=f(i,actualPolulations)
+def travelAll(f,actualPopulations):
+    newPopulations=numpy.zeros(len(actualPopulations))
+    for i in range(len(actualPopulations)):
+        newPopulations[i]=f(i,actualPopulations)
     return newPopulations
 
 	

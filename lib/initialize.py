@@ -19,10 +19,10 @@ def initialize():
 def variableParameters():
 
     # define all variable parameters:
-    glob.steps = 200 	# number of steps for the simulation
+    glob.steps = 100000 	# number of steps for the simulation
     glob.step = 0		# current step
     glob.pt = 0.1 		# probability of travel
-    glob.sf = 0.4 		# share of peolple traveling via air
+    glob.sf = 0.3 		# share of peolple traveling via air
     
     
     glob.pf = glob.pt*glob.sf 		#probability of traveling via air    
@@ -41,8 +41,8 @@ def variableParameters():
     glob.sus[0]=glob.sus[0]-glob.inf[0]
 
     #parameters of disease:
-    glob.beta=0.1
-    glob.gamma=0.07
+    glob.beta=1#0.1
+    glob.gamma=0.0001#0.07
     glob.mu=3*10**-5
     return    
 

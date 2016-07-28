@@ -10,7 +10,8 @@ import lib.infection as inf
 import lib.travel as travel
 
 # Function that draws each frame
-def update(bla):
+def update(*args):
+	
 	# increase steap count
 	glob.step+=1
 	
@@ -38,13 +39,14 @@ def update(bla):
 	grid_x, grid_y = numpy.mgrid[-13:44:500j, 34:72:500j]
 	zgrid = scipy.interpolate.griddata( (glob.inputData["longitude"], glob.inputData["latitude"]), glob.inf[glob.step]/glob.population, (grid_x, grid_y), method="linear")
 	# Third, draw data
-	glob.cont = glob.m.contourf(grid_x, grid_y, zgrid, cmap="YlOrRd")
+	# For large values of beta, uncomment the levels= part in the following line
+	glob.cont = glob.m.contourf(grid_x, grid_y, zgrid, cmap="YlOrRd", levels=[0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
 	# Fourth, draw map
 	glob.m.drawcoastlines()
+	glob.m.drawcountries()
 	# Fifth, draw cities
 	
 	for i in range(0, glob.cities.size):
-		print(glob.population[i])
 		if glob.population[i] < 1000000:
 			glob.m.plot(glob.inputData["longitude"][i], glob.inputData["latitude"][i], "r.")
 		else:
