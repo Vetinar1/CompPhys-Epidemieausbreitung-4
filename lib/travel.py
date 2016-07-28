@@ -60,42 +60,80 @@ def probabilities(connections,probability):
 
 	
 
-def travelLand(citieIndex,actualPopulations):
+def travelLand(citieIndex,actualPopulations,prob):
     #computes all changes of the population of the citie with the given citieIndex because of the movement of travel via land
-    departure = numpy.sum(glob.probabilitiesLand[citieIndex])*actualPopulations[citieIndex]
-    entry = numpy.sum(actualPopulations*glob.probabilitiesLand[:,citieIndex])
+    departure = numpy.sum(prob[citieIndex])*actualPopulations[citieIndex]
+    entry = numpy.sum(actualPopulations*prob[:,citieIndex])
     change=entry-departure    
     return actualPopulations[citieIndex]+change
 
 
-def travelAir(citieIndex,actualPopulations):
+def travelAir(citieIndex,actualPopulations,prob):
     #computes all changes of the population of the citie with the given citieIndex because of the movement of travel via air
-    departure = numpy.sum(glob.probabilitiesAir[citieIndex])*actualPopulations[citieIndex]
-    entry = numpy.sum(actualPopulations*glob.probabilitiesAir[:,citieIndex])
+    departure = numpy.sum(prob[citieIndex])*actualPopulations[citieIndex]
+    entry = numpy.sum(actualPopulations*prob[:,citieIndex])
     change=entry-departure    
     return actualPopulations[citieIndex]+change
+				
+				
+#def travelLand(citieIndex,actualPopulations):
+#    #computes all changes of the population of the citie with the given citieIndex because of the movement of travel via land
+#    departure = numpy.sum(glob.probabilitiesLand[citieIndex])*actualPopulations[citieIndex]
+#    entry = numpy.sum(actualPopulations*glob.probabilitiesLand[:,citieIndex])
+#    change=entry-departure    
+#    return actualPopulations[citieIndex]+change
+#
+#
+#def travelAir(citieIndex,actualPopulations):
+#    #computes all changes of the population of the citie with the given citieIndex because of the movement of travel via air
+#    departure = numpy.sum(glob.probabilitiesAir[citieIndex])*actualPopulations[citieIndex]
+#    entry = numpy.sum(actualPopulations*glob.probabilitiesAir[:,citieIndex])
+#    change=entry-departure    
+#    return actualPopulations[citieIndex]+change
 
  
  
-def travelAll(f,actualPolulations):
+def travelAll(f,actualPolulations,prob):
     newPopulations=numpy.zeros(len(actualPolulations))
     for i in range(len(actualPolulations)):
-        newPopulations[i]=f(i,actualPolulations)
+        newPopulations[i]=f(i,actualPolulations,prob)
     return newPopulations
 
 	
 def travelLandAll(step):
-    glob.sus[step]=travelAll(travelLand,glob.sus[step-1])
-    glob.inf[step]=travelAll(travelLand,glob.inf[step-1])
-    glob.rec[step]=travelAll(travelLand,glob.rec[step-1])
+    glob.sus[step]=travelAll(travelLand,glob.sus[step-1],glob.probabilitiesLand)
+    glob.inf[step]=travelAll(travelLand,glob.inf[step-1],glob.probabilitiesLand*glob.ptInf)
+    glob.rec[step]=travelAll(travelLand,glob.rec[step-1],glob.probabilitiesLand)
     glob.dead[step]=glob.dead[step-1]
     return
     
 	
 def travelAirAll(step):
-    glob.sus[step]=travelAll(travelAir,glob.sus[step])
-    glob.inf[step]=travelAll(travelAir,glob.inf[step])
-    glob.rec[step]=travelAll(travelAir,glob.rec[step])
+    glob.sus[step]=travelAll(travelAir,glob.sus[step],glob.probabilitiesAir)
+    glob.inf[step]=travelAll(travelAir,glob.inf[step],glob.probabilitiesAir*glob.ptInf)
+    glob.rec[step]=travelAll(travelAir,glob.rec[step],glob.probabilitiesAir)
     
     return
+				
+#def travelAll(f,actualPolulations):
+#    newPopulations=numpy.zeros(len(actualPolulations))
+#    for i in range(len(actualPolulations)):
+#        newPopulations[i]=f(i,actualPolulations)
+#    return newPopulations
+#
+#	
+#def travelLandAll(step):
+#    glob.sus[step]=travelAll(travelLand,glob.sus[step-1])
+#    glob.inf[step]=travelAll(travelLand,glob.inf[step-1])
+#    glob.rec[step]=travelAll(travelLand,glob.rec[step-1])
+#    glob.dead[step]=glob.dead[step-1]
+#    return
+#    
+#	
+#def travelAirAll(step):
+#    glob.sus[step]=travelAll(travelAir,glob.sus[step])
+#    glob.inf[step]=travelAll(travelAir,glob.inf[step])
+#    glob.rec[step]=travelAll(travelAir,glob.rec[step])
+#    
+#    return
 	

@@ -19,11 +19,12 @@ def initialize():
 def variableParameters():
 
     # define all variable parameters:
-    glob.steps = 1000 	# number of steps for the simulation
+    glob.steps = 400 	# number of steps for the simulation
     glob.step = 0		# current step
     glob.pt = 0.01 		# probability of travel
     glob.sf = 0.4 		# share of peolple traveling via air
     glob.quar = 0 		# degree of quarantine, has to be between 0-1, 0: no quarantin, 1: all infected people are in quarantin
+    glob.ptInf = 1		#share of infected people traveling although they are infected, has to be between 0-1, 0: nobody travels when infected, 1: infected people travel with the same probability as healthy people
     
     
     glob.pf = glob.pt*glob.sf 		#probability of traveling via air    

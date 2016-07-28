@@ -21,9 +21,14 @@ import numpy
 print('loading data, please wait \n')
 init.initialize()
 
-#asking for choosing containment and calculation method
+#asking for choosing containment and calculation method and asking if the probability of travel should depend on state of health
 containment=input('Please choose a containment method. Enter the number. Valid: \n 1: none \n 2: quarantine: put a share of the infected get in quarantine \n 3: inoculation: instantly inoculate 10% of all the people when more than 3% are infected \n 4: closing airport of the city with the highest infection rate > 5% \n (Default=1)\n')
 glob.method = input("Please choose calculation method. Valid: RK4, Euler, ODE. Default: ODE. \n")
+probTravel = input('Should the probability of travel should depend on state of health? (y/n)')
+
+if probTravel=='y':
+	inp = float(input('Please type in the share of infected people traveling although they are infected.\n Has to be between 0-1 \n 0: nobody travels when infected \n 1: infected people travel with the same probability as healthy people \n'))
+	glob.ptInf=inp
 
 if containment=='2':
 	glob.containment='quarantine'
@@ -37,11 +42,9 @@ else:
 #run simulation:
 print('simulation is running, please wait \n')
 #if quarantine is selected:
-if(containment=='2'):
-    cont.quarantine() 
-    print(glob.quar,'of the infected people are in quarantin')
 
-notYetInoculate=True #to make sure that theres only one day with inoculations
+
+notYetCont=True #to make sure that theres only one day with inoculations
 for i in range (1,glob.steps+1):
     #travel:
     travel.travelLandAll(i)
@@ -58,13 +61,19 @@ for i in range (1,glob.steps+1):
         inf.infectODEsolverAll(i)
     
     #inoculate people once when the option is set:
-    if (notYetInoculate and containment=='3'):
+    if (notYetCont and containment=='3'):
         #start the instant inoculation when there are totaly more then 3% infected people
         if numpy.sum(glob.inf[i])/numpy.sum(glob.population)>0.03:
             print('inoculation at step ',i)
             cont.inoculation(i)
-            notYetInoculate=False
+            notYetCont=False
     
+    if(notYetCont and containment=='2'):
+        if numpy.sum(glob.inf[i])/numpy.sum(glob.population)>0.03:
+            cont.quarantine() 
+            print('step:',i,' ',glob.quar,'of the infected people are in quarantin')
+            notYetCont=False
+				
     #close airports when the option is set:        
     elif(containment=='4'):
         #find the city with the highest share of infected people:
